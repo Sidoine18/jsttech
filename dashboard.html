@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord | JS TECH</title>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --accent-orange: #ff914d;
+            --dark-bg: #0a0f1d;
+            --card-bg: #161e2d;
+            --white: #ffffff;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+        }
+
+        /* Sidebar (Barre latérale) */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #050811;
+            padding: 30px 20px;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            position: fixed;
+        }
+
+        .sidebar h2 { color: var(--accent-orange); font-size: 20px; margin-bottom: 40px; }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* Contenu Principal */
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            width: 100%;
+        }
+
+        .header-dash {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary-blue), #003366);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-card h3 { font-size: 14px; color: #94a3b8; margin: 0; }
+        .stat-card p { font-size: 24px; font-weight: bold; margin: 10px 0 0; }
+
+        .course-list {
+            margin-top: 40px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .course-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.waiting { background: rgba(255, 145, 77, 0.2); color: var(--accent-orange); }
+        .status.active { background: rgba(37, 211, 102, 0.2); color: #25d366; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>JS TECH Dash</h2>
+    <a href="#" class="menu-item active">Tableau de bord</a>
+    <a href="#" class="menu-item">Mes Formations</a>
+    <a href="#" class="menu-item">Ressources PDF</a>
+    <a href="#" class="menu-item">Mon Profil</a>
+    <br><br>
+    <a href="index.html" class="menu-item" style="color: #ff4d4d;">Déconnexion</a>
+</div>
+
+<div class="main-content">
+    <div class="header-dash">
+        <h1>Mon Espace Étudiant</h1>
+        <div style="background: var(--card-bg); padding: 5px 15px; border-radius: 30px; font-size: 14px;">
+            Étudiant : <strong>Sidoine A.</strong>
+        </div>
+    </div>
+
+    <div class="welcome-card">
+        <h2>Prêt à apprendre quelque chose de nouveau ?</h2>
+        <p>Consultez vos cours en attente ou contactez le centre pour valider votre inscription.</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Formations suivies</h3>
+            <p>02</p>
+        </div>
+        <div class="stat-card">
+            <h3>Attestations</h3>
+            <p>00</p>
+        </div>
+        <div class="stat-card">
+            <h3>Support JS TECH</h3>
+            <p style="color: #25d366; font-size: 14px;">En ligne</p>
+        </div>
+    </div>
+
+    <div class="course-list">
+        <h3>Mes inscriptions récentes</h3>
+        
+        <div class="course-item">
+            <div>
+                <strong>Pack Bureautique Expert</strong><br>
+                <small style="color: #64748b;">Inscrit le 26 Fév 2026</small>
+            </div>
+            <span class="status active">Confirmé</span>
+        </div>
+
+        <div class="course-item">
+            <div>
+                <strong>Maintenance Informatique</strong><br>
+                <small style="color: #64748b;">En attente de validation</small>
+            </div>
+            <span class="status waiting">En attente</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

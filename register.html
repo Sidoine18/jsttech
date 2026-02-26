@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | JS TECH</title>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --accent-orange: #ff914d;
+            --dark-bg: #0a0f1d;
+            --input-bg: #1e293b;
+            --white: #ffffff;
+        }
+
+        body {
+            background: var(--dark-bg);
+            background-image: radial-gradient(circle at top right, rgba(0, 86, 179, 0.2), transparent);
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .register-container {
+            display: flex;
+            width: 900px;
+            max-width: 95%;
+            background: rgba(22, 30, 45, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        /* Panneau de gauche (Info) */
+        .info-panel {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-blue), #003366);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .info-panel img {
+            width: 120px;
+            margin: 0 auto 20px;
+        }
+
+        .info-panel h2 { font-size: 28px; margin-bottom: 15px; }
+        .info-panel p { color: #cbd5e1; font-size: 14px; line-height: 1.6; }
+
+        /* Panneau de droite (Formulaire) */
+        .form-panel {
+            flex: 1.5;
+            padding: 40px;
+            background: transparent;
+        }
+
+        .form-header { margin-bottom: 30px; }
+        .form-header h1 { font-size: 24px; color: var(--accent-orange); }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8; }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--input-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-orange);
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 145, 77, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-orange);
+            border: none;
+            border-radius: 8px;
+            color: var(--dark-bg);
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 145, 77, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .login-link a { color: var(--accent-orange); text-decoration: none; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .register-container { flex-direction: column; }
+            .info-panel { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <div class="info-panel">
+        <img src="jst-service-logo.png" alt="JS TECH Logo">
+        <h2>Rejoignez l'élite</h2>
+        <p>Boostez votre carrière avec les formations de Mr Elisée SOHOUNGBLE. Apprenez, pratiquez et réussissez à JS TECH Bohicon.</p>
+    </div>
+
+    <div class="form-panel">
+        <div class="form-header">
+            <h1>Créer un compte</h1>
+            <p style="color: #64748b; font-size: 14px;">Inscrivez-vous pour accéder à nos cours.</p>
+        </div>
+
+        <form action="#">
+            <div class="form-group">
+                <label>Nom Complet</label>
+                <input type="text" placeholder="Ex: Jean KPEDLI" required>
+            </div>
+
+            <div class="form-group">
+                <label>Numéro de téléphone (WhatsApp)</label>
+                <input type="tel" placeholder="Ex: 01 43 33 43 78" required>
+            </div>
+
+            <div class="form-group">
+                <label>Formation souhaitée</label>
+                <select required>
+                    <option value="" disabled selected>Choisissez une formation</option>
+                    <option value="initiation">Initiation Informatique</option>
+                    <option value="bureautique">Pack Bureautique Expert</option>
+                    <option value="maintenance">Maintenance & Réseaux</option>
+                    <option value="promo">🌞 Promo Vacances</option>
+                    <option value="autre">Autre service informatique</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Créer mon compte étudiant</button>
+        </form>
+
+        <div class="login-link">
+            Déjà inscrit ? <a href="login.html">Se connecter</a>
+        </div>
+        
+    </div>
+    
+</div>
+
+</body>
+</html>
