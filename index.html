@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS TECH | Formations & Services Informatiques</title>
+    <style>
+        /* =========================
+           VARIABLES & RESET
+        ========================= */
+        :root {
+            --primary-blue: #0056b3;
+            --accent-orange: #ff914d;
+            --dark-bg: #0a0f1d;
+            --card-bg: #161e2d;
+            --text-light: #cbd5e1;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: var(--dark-bg);
+            background-image: radial-gradient(circle at top right, rgba(0, 86, 179, 0.15), transparent),
+                              radial-gradient(circle at bottom left, rgba(255, 145, 77, 0.05), transparent);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        header {
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 15, 29, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            height: 50px;
+            transition: transform 0.3s;
+        }
+        .logo:hover { transform: scale(1.05); }
+
+        .nav-buttons a {
+            text-decoration: none;
+            margin-left: 15px;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-orange);
+            color: var(--dark-bg);
+        }
+
+        /* =========================
+           HERO SECTION
+        ========================= */
+        .hero {
+            text-align: center;
+            padding: 100px 10% 60px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            background: linear-gradient(90deg, #fff, var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .action-buttons {
+            margin-top: 40px;
+        }
+
+        .btn-main {
+            background: var(--accent-orange);
+            color: var(--dark-bg) !important;
+            padding: 16px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 145, 77, 0.3);
+        }
+
+        /* =========================
+           FORMATIONS GRID
+        ========================= */
+        .formations {
+            padding: 60px 8%;
+        }
+
+        .formations h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .formations h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-orange);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        .formations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .formation-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .formation-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .formation-card h3 {
+            color: var(--white);
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .formation-card p {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .price-tag {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-orange);
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .formation-card button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(0, 86, 179, 0.1);
+            color: var(--primary-blue);
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid var(--primary-blue);
+            transition: 0.3s;
+        }
+
+        .formation-card button:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* =========================
+           TESTIMONIALS
+        ========================= */
+        .testimonials {
+            padding: 80px 8%;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .card {
+            background: var(--dark-bg);
+            border-left: 4px solid var(--accent-orange);
+            padding: 25px;
+            border-radius: 12px;
+            width: 320px;
+        }
+        /* =========================
+   BOUTON WHATSAPP FLOTTANT
+========================= */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    background-color: #128c7e;
+    color: white;
+}
+
+/* Petit badge textuel à côté du bouton (optionnel) */
+.whatsapp-float::before {
+    content: "Contactez-nous";
+    position: absolute;
+    right: 70px;
+    background: white;
+    color: #333;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.whatsapp-float:hover::before {
+    opacity: 1;
+}
+
+/* Responsive : cacher le texte sur petit mobile pour ne pas encombrer */
+@media (max-width: 480px) {
+    .whatsapp-float::before { display: none; }
+}
+
+
+        /* =========================
+   SECTION LOCALISATION (MAPS)
+========================= */
+.maps-section {
+    padding: 60px 8%;
+    text-align: center;
+}
+
+.maps-container {
+    width: 100%;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 145, 77, 0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-top: 30px;
+}
+
+.maps-section h2 {
+    font-size: 28px;
+    color: white;
+}
+
+.maps-section p {
+    color: var(--text-light);
+    margin-top: 10px;
+}
+
+        /* =========================
+           FOOTER
+        ========================= */
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #050811;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            header { padding: 15px 5%; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <img src="jst-service-logo.png" alt="JS TECH Logo" class="logo">
+
+    <div class="nav-buttons">
+        <a href="login.html" style="color: white;">Connexion</a>
+        <a href="register.html" class="btn-primary">S'inscrire</a>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Excellence Informatique & Innovation Digitale</h1>
+    <p>
+        JS TECH transforme votre potentiel. De la formation d'expert au support technique de pointe, 
+        nous sommes votre partenaire de confiance dans l'économie numérique.
+    </p>
+
+    <div class="action-buttons">
+        <a href="register.html" class="btn-main">Démarrer une formation</a>
+    </div>
+</section>
+
+<style>
+    /* Nouveaux styles pour la section Présentation */
+    .about-section {
+        padding: 60px 8%;
+        display: flex;
+        align-items: center;
+        gap: 50px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 30px;
+        margin: 40px 8%;
+    }
+
+    .about-image {
+        flex: 1;
+        text-align: center;
+    }
+
+    .about-image img {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        border: 4px solid var(--accent-orange);
+        object-fit: cover;
+        box-shadow: 0 0 20px rgba(255, 145, 77, 0.4);
+    }
+
+    .about-content {
+        flex: 2;
+    }
+
+    .about-content h2 {
+        color: var(--accent-orange);
+        margin-bottom: 15px;
+    }
+
+    .badge-promo {
+        display: inline-block;
+        background: linear-gradient(45deg, var(--accent-orange), #ff5e00);
+        color: var(--dark-bg);
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .info-location {
+        margin-top: 20px;
+        padding: 15px;
+        border-left: 3px solid var(--primary-blue);
+        background: rgba(0, 86, 179, 0.1);
+    }
+
+    /* Style pour la grille des domaines */
+    .domain-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .domain-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: var(--text-light);
+    }
+
+    .domain-item::before {
+        content: '✓';
+        color: var(--accent-orange);
+        margin-right: 8px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+        .about-section { flex-direction: column; text-align: center; }
+        .domain-list { grid-template-columns: 1fr; }
+    }
+</style>
+
+<body>
+
+<section class="about-section">
+    <div class="about-image">
+        <img src="images/elisee-sohoungble.jpg" alt="Mr Elisée SOHOUNGBLE">
+        <h4 style="margin-top: 15px;">Mr Elisée SOHOUNGBLE</h4>
+        <p style="color: var(--accent-orange); font-size: 14px;">Fondateur & Formateur Expert</p>
+    </div>
+
+    <div class="about-content">
+        <div class="badge-promo">🌞 PROMO VACANCES DISPONIBLE</div>
+        <h2>🎯 Notre Objectif</h2>
+        <p>Former tout le monde aux TIC, sans distinction d’âge ni de niveau. Nous vous donnons les clés pour maîtriser les outils informatiques indispensables dans le monde académique et professionnel.</p>
+        
+        <a href="https://wa.me/2290143334378?text=Bonjour%20JS%20TECH,%20je%20souhaite%20avoir%20plus%20d'informations%20sur%20vos%20formations/services." 
+        class="whatsapp-float" 
+        target="_blank">
+        <svg width="35" height="35" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.628 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        </a>
+
+        <div class="domain-list">
+            <div class="domain-item">Bureautique (Word, Excel, PowerPoint)</div>
+            <div class="domain-item">Maintenance informatique</div>
+            <div class="domain-item">Services d’imprimerie HD</div>
+            <div class="domain-item">Formations longue et courte durée</div>
+        </div>
+
+        <div class="info-location">
+            📍 <strong>Retrouvez-nous :</strong> Bohicon, Arrondissement d’Avogbanna, Quartier Zounzonmè.
+        </div>
+    </div>
+</section>
+
+<section class="formations">
+    <h2 style="text-align: center;">Nos Catalogues de Formations</h2>
+    <div id="formationsContainer" class="formations-grid"></div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const formations = [
+        { id: "initiation", titre: "Initiation Informatique", description: "Bases du système, Windows et gestion de fichiers.", prix: 45000 },
+        { id: "bureautique", titre: "Pack Bureautique Expert", description: "Maîtrise complète de Word, Excel et PowerPoint.", prix: 75000 },
+        { id: "maintenance", titre: "Maintenance & Réseaux", description: "Apprenez à dépanner et configurer des parcs informatiques.", prix: 120000 },
+        { id: "promo-vacances", titre: "Promo Vacances", description: "Formation intensive pour élèves, étudiants et enseignants.", prix: 25000 },
+        { id: "imprimerie", titre: "Services Imprimerie", description: "Impression couleur/NB, photocopie et reliure rapide.", prix: "Tarif Unitaire" }
+    ];
+
+    const container = document.getElementById("formationsContainer");
+
+    formations.forEach(f => {
+        const card = document.createElement("div");
+        card.classList.add("formation-card");
+        
+        const displayPrix = typeof f.prix === 'number' 
+            ? f.prix.toLocaleString('fr-FR') + " FCFA" 
+            : f.prix;
+
+        card.innerHTML = `
+            <div>
+                ${f.id === 'promo-vacances' ? '<span style="color:var(--accent-orange); font-size:12px; font-weight:bold;">SÉANCE SPÉCIALE</span>' : ''}
+                <h3>${f.titre}</h3>
+                <p>${f.description}</p>
+            </div>
+            <div>
+                <span class="price-tag">${displayPrix}</span>
+                <button onclick="window.location.href='details.html?id=${f.id}'">En savoir plus</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+});
+</script>
+
+
+
+<section class="testimonials">
+    <h2 style="text-align: center;">Ils nous font confiance</h2>
+    <div class="cards" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 40px;">
+        <div class="card">
+            <p>"JS TECH m’a permis d’acquérir des compétences solides. La qualité est exceptionnelle."</p>
+            <h4 style="color: var(--accent-orange); margin-top: 15px;">Sidoine A.</h4>
+        </div>
+        <div class="card">
+            <p>"Une plateforme intuitive et moderne. Je recommande à tous les passionnés."</p>
+            <h4 style="color: var(--accent-orange); margin-top: 15px;">Merveille B.</h4>
+        </div>
+        <div class="card">
+            <p>"JS TECH m’a permis d’acquérir des compétences solides. La qualité est exceptionnelle."</p>
+            <h4 style="color: var(--accent-orange); margin-top: 15px;">Sidoine A.</h4>
+        </div>
+        <div class="card">
+            <p>"JS TECH m’a permis d’acquérir des compétences solides. La qualité est exceptionnelle."</p>
+            <h4 style="color: var(--accent-orange); margin-top: 15px;">Sidoine A.</h4>
+        </div>
+        <div class="card">
+            <p>"JS TECH m’a permis d’acquérir des compétences solides. La qualité est exceptionnelle."</p>
+            <h4 style="color: var(--accent-orange); margin-top: 15px;">Sidoine A.</h4>
+        </div>
+    </div>
+</section>
+
+<section class="maps-section">
+    <h2>📍 Venez nous voir à Bohicon</h2>
+    <p>JS TECH est situé dans l'arrondissement d’Avogbanna, quartier Zounzonmè.</p>
+    
+    <div class="maps-container">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m13!1m3!1d15814.717015437!2d2.0626949!3d7.1797351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1025190031b6267f%3A0xbb126dd036f31894!2sAvogbanna%2C%20Bohicon!5e0!3m2!1sfr!2sbj!4v1700000000000!5m2!1sfr!2sbj" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="https://www.google.com/maps/dir//Avogbanna,+Bohicon" 
+           target="_blank" 
+           class="btn-outline" 
+           style="display: inline-block; text-decoration: none; padding: 12px 25px; border-radius: 8px;">
+           Lancer l'itinéraire
+        </a>
+    </div>
+</section>
+
+<footer>
+    &copy; 2026 <strong>JS TECH</strong> — Formations & Services Informatiques.
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const formations = [
+        { id: "dev-web", titre: "Développement Web Complet", description: "Mastery HTML, CSS, JavaScript, React & Node.js", prix: 150000 },
+        { id: "dev-mobile", titre: "Développement Mobile", description: "Créez des applications natives Android & iOS", prix: 200000 },
+        { id: "cyber", titre: "Cybersécurité", description: "Protection avancée des systèmes & réseaux", prix: 250000 },
+        { id: "design", titre: "Infographie & Design", description: "Photoshop, Illustrator & Identité visuelle", prix: 125000 },
+        { id: "web-dev-service", titre: "Création de Sites Web", description: "Service de conception vitrine & e-commerce", prix: 350000 },
+        { id: "impression", titre: "Impression HD & Finition", description: "Photocopies, tirages photos et reliures", prix: "Sur Devis" }
+    ];
+
+    const container = document.getElementById("formationsContainer");
+
+    formations.forEach(f => {
+        const card = document.createElement("div");
+        card.classList.add("formation-card");
+        
+        // Formatage du prix : Si c'est un nombre, on ajoute l'unité et l'espace des milliers
+        const displayPrix = typeof f.prix === 'number' 
+            ? f.prix.toLocaleString('fr-FR') + " FCFA" 
+            : f.prix;
+
+        card.innerHTML = `
+            <div>
+                <h3>${f.titre}</h3>
+                <p>${f.description}</p>
+            </div>
+            <div>
+                <span class="price-tag">${displayPrix}</span>
+                <button onclick="window.location.href='details.html?id=${f.id}'">
+                    En savoir plus
+                </button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+});
+</script>
+
+</body>
+</html>
