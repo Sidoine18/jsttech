@@ -3,179 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion | JS TECH</title>
+    <title>Rejoindre JS TECH | Inscription</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-blue: #0056b3;
-            --accent-orange: #ff914d;
-            --dark-bg: #0a0f1d;
-            --input-bg: #1e293b;
-            --white: #ffffff;
+            --bg-dark: #0a0f1d;
+            --primary: #3b82f6;
+            --accent: #ff914d;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text-dim: #94a3b8;
         }
 
-        body {
-            background: var(--dark-bg);
-            background-image: radial-gradient(circle at bottom left, rgba(255, 145, 77, 0.15), transparent);
-            font-family: 'Segoe UI', sans-serif;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-dark); color: white; overflow: hidden; }
 
-        .login-container {
-            display: flex;
-            width: 850px;
-            max-width: 95%;
-            background: rgba(22, 30, 45, 0.8);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-        }
+        .auth-container { display: flex; height: 100vh; }
 
-        /* Panneau Info (Gauche) */
-        .info-panel {
+        /* --- CÔTÉ GAUCHE : VISUEL & MOTIVATION --- */
+        .auth-visual {
             flex: 1;
-            background: linear-gradient(135deg, #003366, var(--primary-blue));
-            padding: 40px;
+            background: linear-gradient(135deg, rgba(10, 15, 29, 0.8), rgba(59, 130, 246, 0.2)), 
+                        url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&q=80'); /* Image Tech Pro */
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            text-align: center;
+            padding: 80px;
+            position: relative;
         }
 
-        .info-panel h2 { font-size: 26px; margin-bottom: 10px; }
-        .info-panel p { color: #cbd5e1; font-size: 14px; margin-bottom: 20px; }
-
-        /* Panneau Formulaire (Droite) */
-        .form-panel {
-            flex: 1.2;
-            padding: 50px 40px;
+        .auth-visual::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, transparent, var(--bg-dark));
         }
 
-        .logo-small {
-            width: 80px;
-            margin-bottom: 20px;
-            display: block;
-        }
+        .visual-content { position: relative; z-index: 2; max-width: 500px; }
+        .visual-content h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .visual-content p { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 40px; line-height: 1.6; }
 
-        .form-header h1 { font-size: 24px; color: var(--accent-orange); margin-bottom: 5px; }
-        .form-header p { color: #64748b; font-size: 14px; margin-bottom: 30px; }
+        .feature-list { list-style: none; padding: 0; }
+        .feature-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-weight: 500; }
+        .feature-item i { color: var(--accent); font-size: 20px; }
 
-        .form-group { margin-bottom: 20px; position: relative; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: #94a3b8; }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            background: var(--input-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: white;
-            transition: 0.3s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary-blue);
-            outline: none;
-            box-shadow: 0 0 10px rgba(0, 86, 179, 0.3);
-        }
-
-        /* Options Supplémentaires */
-        .form-options {
+        /* --- CÔTÉ DROIT : FORMULAIRE --- */
+        .auth-form-section {
+            width: 550px;
+            background: var(--bg-dark);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            margin-bottom: 25px;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            position: relative;
         }
 
-        .remember-me { display: flex; align-items: center; gap: 5px; cursor: pointer; color: #94a3b8; }
-        .remember-me input { cursor: pointer; }
+        .form-header { margin-bottom: 40px; }
+        .form-header img { width: 120px; margin-bottom: 20px; }
+        .form-header h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
 
-        .forgot-pass { color: var(--accent-orange); text-decoration: none; font-weight: 600; }
-        .forgot-pass:hover { text-decoration: underline; }
-
-        .btn-login {
+        /* Bouton Google Pro */
+        .social-btn {
             width: 100%;
             padding: 14px;
-            background: var(--primary-blue);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+        .social-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--primary); }
+
+        .divider { display: flex; align-items: center; text-align: center; margin-bottom: 25px; color: var(--text-dim); font-size: 12px; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        /* Inputs */
+        .input-group { margin-bottom: 20px; position: relative; }
+        .input-group i { position: absolute; left: 15px; top: 18px; color: var(--text-dim); }
+        .input-group input {
+            width: 100%;
+            padding: 16px 16px 16px 45px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            box-sizing: border-box;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .input-group input:focus { border-color: var(--primary); background: rgba(59, 130, 246, 0.05); outline: none; }
+
+        .btn-register {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 10px;
         }
+        .btn-register:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
 
-        .btn-login:hover {
-            background: #004494;
-            transform: translateY(-2px);
-        }
+        .footer-text { margin-top: 30px; text-align: center; color: var(--text-dim); font-size: 14px; }
+        .footer-text a { color: var(--primary); text-decoration: none; font-weight: 600; }
 
-        .register-footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
-
-        .register-footer a { color: var(--accent-orange); text-decoration: none; font-weight: bold; }
-
-        @media (max-width: 768px) {
-            .login-container { flex-direction: column; }
-            .info-panel { display: none; } /* On cache le panneau bleu sur mobile pour aller à l'essentiel */
+        @media (max-width: 1000px) {
+            .auth-visual { display: none; }
+            .auth-form-section { width: 100%; padding: 30px; }
         }
     </style>
 </head>
 <body>
 
-<div class="login-container">
-    <div class="info-panel">
-        <h2>Content de vous revoir !</h2>
-        <p>Connectez-vous pour poursuivre votre apprentissage et accéder à vos ressources numériques.</p>
-        <div style="font-size: 50px;">🚀</div>
-    </div>
-
-    <div class="form-panel">
-        <img src="jst-service-logo.png" alt="JS TECH Logo" class="logo-small">
-        
-        <div class="form-header">
-            <h1>Connexion</h1>
-            <p>Espace étudiant JS TECH</p>
+    <div class="auth-container">
+        <div class="auth-visual">
+            <div class="visual-content">
+                <h1>Maîtrisez le futur numérique.</h1>
+                <p>Rejoignez plus de 500 étudiants déjà formés par JS TECH à Bohicon et partout au Bénin.</p>
+                
+                <ul class="feature-list">
+                    <li class="feature-item"><i class="fas fa-check-circle"></i> Accès illimité aux vidéos HD</li>
+                    <li class="feature-item"><i class="fas fa-check-circle"></i> Certificats vérifiables par QR Code</li>
+                    <li class="feature-item"><i class="fas fa-check-circle"></i> Support direct avec Mr Elisée</li>
+                </ul>
+            </div>
         </div>
 
-        <form action="#">
-            <div class="form-group">
-                <label>Numéro de téléphone ou Email</label>
-                <input type="text" placeholder="Entrez vos identifiants" required>
+        <div class="auth-form-section">
+            <div class="form-header">
+                <img src="jst-service-logo.png" alt="JS TECH">
+                <h2>Créer un compte étudiant</h2>
+                <p style="color: var(--text-dim);">Commencez votre apprentissage aujourd'hui.</p>
             </div>
 
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" placeholder="••••••••" required>
-            </div>
+            <button class="social-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
+                S'inscrire avec Google
+            </button>
 
-            <div class="form-options">
-                <label class="remember-me">
-                    <input type="checkbox"> Se souvenir de moi
-                </label>
-                <a href="#" class="forgot-pass">Mot de passe oublié ?</a>
-            </div>
+            <div class="divider">OU AVEC VOTRE EMAIL</div>
 
-            <button type="submit" class="btn-login">Se connecter</button>
-        </form>
+            <form action="#">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Nom complet" required>
+                </div>
 
-        <div class="register-footer">
-            Nouveau sur la plateforme ? <a href="register.html">Créer un compte</a>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="Adresse Email" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" placeholder="Numéro WhatsApp" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Mot de passe" required>
+                </div>
+
+                <button type="submit" class="btn-register">Créer mon compte</button>
+            </form>
+
+            <p class="footer-text">
+                Déjà inscrit ? <a href="connexion.html">Se connecter</a>
+            </p>
         </div>
     </div>
-</div>
 
 </body>
 </html>
