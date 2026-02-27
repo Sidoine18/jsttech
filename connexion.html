@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Étudiant | JS TECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0a0f1d;
+            --primary: #3b82f6;
+            --accent: #ff914d;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text-dim: #94a3b8;
+        }
+
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-dark); color: white; overflow: hidden; }
+
+        .auth-container { display: flex; height: 100vh; }
+
+        /* --- CÔTÉ GAUCHE : VISUEL (Inversé par rapport à l'inscription pour varier) --- */
+        .auth-visual {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(10, 15, 29, 0.9), rgba(255, 145, 77, 0.2)), 
+                        url('https://images.unsplash.com/photo-1525333323552-4585e897f338?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px;
+            position: relative;
+        }
+
+        .visual-content { position: relative; z-index: 2; }
+        .visual-content h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 20px; }
+        .visual-content p { font-size: 1.1rem; color: var(--text-dim); max-width: 450px; line-height: 1.6; }
+
+        /* --- CÔTÉ DROIT : FORMULAIRE --- */
+        .auth-form-section {
+            width: 550px;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .form-header { margin-bottom: 40px; }
+        .form-header img { width: 120px; margin-bottom: 20px; cursor: pointer; }
+
+        .social-btn {
+            width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass); color: white; display: flex; align-items: center;
+            justify-content: center; gap: 12px; cursor: pointer; transition: 0.3s; font-weight: 600;
+        }
+        .social-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--primary); }
+
+        .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: var(--text-dim); font-size: 12px; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        .input-group { margin-bottom: 20px; position: relative; }
+        .input-group i { position: absolute; left: 15px; top: 18px; color: var(--text-dim); }
+        .input-group input {
+            width: 100%; padding: 16px 16px 16px 45px; background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white;
+            box-sizing: border-box; transition: 0.3s;
+        }
+        .input-group input:focus { border-color: var(--primary); outline: none; background: rgba(59, 130, 246, 0.05); }
+
+        .btn-login {
+            width: 100%; padding: 16px; background: var(--primary); color: white;
+            border: none; border-radius: 12px; font-weight: 700; font-size: 16px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-login:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
+
+        .footer-text { margin-top: 30px; text-align: center; color: var(--text-dim); font-size: 14px; }
+        .footer-text a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+        @media (max-width: 1000px) { .auth-visual { display: none; } .auth-form-section { width: 100%; padding: 30px; } }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="auth-visual">
+            <div class="visual-content">
+                <h1>Bon retour parmi nous !</h1>
+                <p>Continuez votre formation là où vous vous êtes arrêté et atteignez vos objectifs avec JS TECH.</p>
+            </div>
+        </div>
+
+        <div class="auth-form-section">
+            <div class="form-header">
+                <img src="jst-service-logo.png" alt="JS TECH" onclick="window.location.href='index.html'">
+                <h2>Connexion Étudiant</h2>
+            </div>
+
+            <button class="social-btn" onclick="simulateGoogleLogin()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
+                Se connecter avec Google
+            </button>
+
+            <div class="divider">OU AVEC VOS IDENTIFIANTS</div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Email ou Numéro WhatsApp" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="pass" placeholder="Mot de passe" required>
+                </div>
+
+                <div style="text-align: right; margin-bottom: 20px;">
+                    <a href="#" style="color: var(--text-dim); font-size: 13px; text-decoration: none;">Mot de passe oublié ?</a>
+                </div>
+
+                <button type="submit" class="btn-login">SE CONNECTER</button>
+            </form>
+
+            <p class="footer-text">
+                Nouveau chez JS TECH ? <a href="login.html">Créer un compte</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulation d'une vérification de compte
+            const btn = document.querySelector('.btn-login');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification...';
+            
+            setTimeout(() => {
+                // Redirection vers le dashboard étudiant après 1.5s
+                window.location.href = "dashboard.html";
+            }, 1500);
+        });
+
+        function simulateGoogleLogin() {
+            alert("Connexion via Google en cours...");
+            window.location.href = "dashboard.html";
+        }
+    </script>
+</body>
+</html>

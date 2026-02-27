@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription | JS TECH</title>
+    <title>Inscription Premium | JS TECH</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
         :root {
-            --primary-blue: #0056b3;
-            --accent-orange: #ff914d;
-            --dark-bg: #0a0f1d;
-            --input-bg: #1e293b;
-            --white: #ffffff;
+            --primary: #0056b3;
+            --accent: #ff914d;
+            --dark: #0a0f1d;
+            --card: #161e2d;
         }
 
         body {
-            background: var(--dark-bg);
-            background-image: radial-gradient(circle at top right, rgba(0, 86, 179, 0.2), transparent);
-            font-family: 'Segoe UI', sans-serif;
+            background: var(--dark);
             color: white;
+            font-family: 'Inter', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,154 +27,184 @@
             margin: 0;
         }
 
-        .register-container {
-            display: flex;
-            width: 900px;
-            max-width: 95%;
-            background: rgba(22, 30, 45, 0.7);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            overflow: hidden;
+        .reg-card {
+            background: var(--card);
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-        }
-
-        /* Panneau de gauche (Info) */
-        .info-panel {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary-blue), #003366);
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             text-align: center;
         }
 
-        .info-panel img {
-            width: 120px;
-            margin: 0 auto 20px;
-        }
+        .logo-placeholder { width: 100px; margin-bottom: 20px; }
 
-        .info-panel h2 { font-size: 28px; margin-bottom: 15px; }
-        .info-panel p { color: #cbd5e1; font-size: 14px; line-height: 1.6; }
-
-        /* Panneau de droite (Formulaire) */
-        .form-panel {
-            flex: 1.5;
-            padding: 40px;
-            background: transparent;
-        }
-
-        .form-header { margin-bottom: 30px; }
-        .form-header h1 { font-size: 24px; color: var(--accent-orange); }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8; }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            background: var(--input-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: white;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--accent-orange);
-            outline: none;
-            box-shadow: 0 0 8px rgba(255, 145, 77, 0.2);
+        .form-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #94a3b8; font-size: 13px; }
+        
+        input, select {
+            width: 100%; padding: 14px; background: #0f172a; border: 1px solid #334155;
+            border-radius: 10px; color: white; box-sizing: border-box; outline: none;
         }
 
         .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background: var(--accent-orange);
-            border: none;
-            border-radius: 8px;
-            color: var(--dark-bg);
-            font-weight: 800;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
+            width: 100%; padding: 16px; background: var(--accent); color: #000;
+            border: none; border-radius: 10px; font-weight: 800; cursor: pointer;
+            font-size: 16px; transition: 0.3s; margin-top: 10px;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 145, 77, 0.4);
-        }
+        .btn-submit:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(255, 145, 77, 0.3); }
 
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
+        #qrcode { display: none; } /* On cache le QR code HTML, il ne sert qu'au PDF */
 
-        .login-link a { color: var(--accent-orange); text-decoration: none; font-weight: bold; }
-
-        @media (max-width: 768px) {
-            .register-container { flex-direction: column; }
-            .info-panel { padding: 30px; }
-        }
+        .success-area { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<div class="register-container">
-    <div class="info-panel">
-        <img src="jst-service-logo.png" alt="JS TECH Logo">
-        <h2>Rejoignez l'élite</h2>
-        <p>Boostez votre carrière avec les formations de Mr Elisée SOHOUNGBLE. Apprenez, pratiquez et réussissez à JS TECH Bohicon.</p>
-    </div>
-
-    <div class="form-panel">
-        <div class="form-header">
-            <h1>Créer un compte</h1>
-            <p style="color: #64748b; font-size: 14px;">Inscrivez-vous pour accéder à nos cours.</p>
+    <div class="reg-card">
+        <div id="form-ui">
+            <img src="jst-service-logo.png" alt="JS TECH" class="logo-placeholder">
+            <h2 style="color: var(--accent);">Inscription Officielle</h2>
+            <p style="color: #64748b; margin-bottom: 30px;">Remplissez vos accès et téléchargez votre pass.</p>
+            
+            <form id="regForm">
+                <div class="form-group">
+                    <label>Nom & Prénoms</label>
+                    <input type="text" id="name" placeholder="Ex: Sidoine AGOSSOU" required>
+                </div>
+                <div class="form-group">
+                    <label>Numéro WhatsApp</label>
+                    <input type="tel" id="tel" placeholder="+229 01 00 00 00" required>
+                </div>
+                <div class="form-group">
+                    <label>Formation</label>
+                    <select id="course_select">
+                        <option value="Maintenance Informatique">Maintenance Informatique</option>
+                        <option value="Bureautique Pro">Bureautique Pro</option>
+                        <option value="Infographie">Infographie & Design</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">S'INSCRIRE & GÉNÉRER LE PASS</button>
+            </form>
         </div>
 
-        <form action="#">
-            <div class="form-group">
-                <label>Nom Complet</label>
-                <input type="text" placeholder="Ex: Jean KPEDLI" required>
-            </div>
+        <div id="qrcode"></div>
 
-            <div class="form-group">
-                <label>Numéro de téléphone (WhatsApp)</label>
-                <input type="tel" placeholder="Ex: 01 43 33 43 78" required>
-            </div>
-
-            <div class="form-group">
-                <label>Formation souhaitée</label>
-                <select required>
-                    <option value="" disabled selected>Choisissez une formation</option>
-                    <option value="initiation">Initiation Informatique</option>
-                    <option value="bureautique">Pack Bureautique Expert</option>
-                    <option value="maintenance">Maintenance & Réseaux</option>
-                    <option value="promo">🌞 Promo Vacances</option>
-                    <option value="autre">Autre service informatique</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" placeholder="••••••••" required>
-            </div>
-
-            <button type="submit" class="btn-submit">Créer mon compte étudiant</button>
-        </form>
-
-        <div class="login-link">
-            Déjà inscrit ? <a href="login.html">Se connecter</a>
+        <div id="success-ui" class="success-area">
+            <div style="font-size: 50px; color: #22c55e; margin-bottom: 20px;">✅</div>
+            <h3>Félicitations !</h3>
+            <p>Votre fiche d'inscription avec QR Code est prête.</p>
+            <p style="font-size: 12px; color: #64748b;">Le téléchargement a démarré...</p>
+            <br>
+            <a href="index.html" style="color: var(--accent); text-decoration: none; font-weight: bold;">Retour à l'accueil</a>
         </div>
-        
     </div>
-    
-</div>
 
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nom = document.getElementById('name').value;
+            const tel = document.getElementById('tel').value;
+            const formation = document.getElementById('course_select').value;
+            const idKey = "JST-" + Math.random().toString(36).substr(2, 6).toUpperCase();
+            const dateStr = new Date().toLocaleString('fr-FR');
+
+            // 1. Générer le QR Code en arrière-plan
+            const qrcodeDiv = document.getElementById("qrcode");
+            qrcodeDiv.innerHTML = ""; // Clear
+            const qr = new QRCode(qrcodeDiv, {
+                text: `VERIF: ${idKey} | ELEVE: ${nom} | COURS: ${formation}`,
+                width: 128,
+                height: 128
+            });
+
+            // On attend une micro-seconde que le QR code soit rendu en image
+            setTimeout(() => {
+                const qrImage = qrcodeDiv.querySelector('canvas').toDataURL("image/png");
+                generatePDF(nom, tel, formation, idKey, dateStr, qrImage);
+            }, 500);
+        });
+
+        function generatePDF(nom, tel, formation, id, date, qrImg) {
+            const doc = new jsPDF();
+
+            // --- DESIGN DU PDF ---
+            // Header Bleu
+            doc.setFillColor(0, 86, 179);
+            doc.rect(0, 0, 210, 50, 'F');
+
+            // Texte Header
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(26);
+            doc.setFont("helvetica", "bold");
+            doc.text("JS TECH SERVICES", 20, 32);
+            doc.setFontSize(10);
+            doc.text("L'EXCELLENCE NUMÉRIQUE À BOHICON", 20, 40);
+
+            // Corps du document
+            doc.setTextColor(20, 20, 20);
+            doc.setFontSize(16);
+            doc.text("CONFIRMATION D'INSCRIPTION", 105, 70, { align: "center" });
+
+            // Carte d'info (Rectangle gris clair)
+            doc.setFillColor(245, 245, 245);
+            doc.roundedRect(20, 80, 170, 100, 5, 5, 'F');
+
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("ID Inscription :", 30, 95);
+            doc.setFont("helvetica", "normal");
+            doc.text(id, 70, 95);
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Étudiant :", 30, 110);
+            doc.setFont("helvetica", "normal");
+            doc.text(nom, 70, 110);
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Formation :", 30, 125);
+            doc.setFont("helvetica", "normal");
+            doc.text(formation, 70, 125);
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Contact :", 30, 140);
+            doc.setFont("helvetica", "normal");
+            doc.text(tel, 70, 140);
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Date :", 30, 155);
+            doc.setFont("helvetica", "normal");
+            doc.text(date, 70, 155);
+
+            // AJOUT DU QR CODE
+            doc.setFont("helvetica", "bold");
+            doc.text("VÉRIFICATION SÉCURISÉE", 140, 135, { align: "center" });
+            doc.addImage(qrImg, 'PNG', 130, 140, 40, 40);
+
+            // Pied de page
+            doc.setFontSize(9);
+            doc.setTextColor(100, 100, 100);
+            doc.text("Présentez ce QR Code au centre pour valider votre accès physique.", 105, 220, { align: "center" });
+            doc.text("JS TECH - Avogbanna, Bohicon | +229 01 43 33 43 78", 105, 230, { align: "center" });
+
+            // Bordure Orange de finition
+            doc.setDrawColor(255, 145, 77);
+            doc.setLineWidth(2);
+            doc.line(0, 290, 210, 290);
+
+            // Sauvegarde
+            doc.save(`Fiche_Inscription_${nom}.pdf`);
+
+            // UI Success
+            document.getElementById('form-ui').style.display = 'none';
+            document.getElementById('success-ui').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
