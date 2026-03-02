@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JS TECH | Dashboard Mobile</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root { --primary: #3b82f6; --accent: #ff914d; --bg: #050811; --card: #111827; --text: #f3f4f6; }
+        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Navigation Mobile (Bas de l'écran) */
+        .mobile-nav { 
+            position: fixed; bottom: 0; left: 0; right: 0; height: 70px; 
+            background: var(--card); display: flex; justify-content: space-around; 
+            align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000;
+        }
+        .nav-item { color: #64748b; text-align: center; flex: 1; cursor: pointer; transition: 0.3s; font-size: 11px; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: var(--primary); }
+
+        /* Conteneur Principal */
+        .main-content { padding: 20px; padding-bottom: 90px; width: 100%; max-width: 1200px; margin: auto; }
+        h1 { font-size: 22px; margin-bottom: 20px; color: var(--accent); }
+
+        /* Cartes & Sections */
+        .glass-card { background: var(--card); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
+        .section { display: none; animation: fadeIn 0.3s ease; }
+        .section.active { display: block; }
+
+        /* Scanner Responsive */
+        #qr-reader { width: 100% !important; border: none !important; border-radius: 15px; overflow: hidden; background: #000; }
+        #qr-reader__scan_region video { object-fit: cover !important; }
+
+        /* Editeur de contenu (Accueil) */
+        .edit-row { margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; }
+        label { display: block; color: #94a3b8; font-size: 12px; margin-bottom: 8px; font-weight: bold; }
+        input, textarea, select { 
+            width: 100%; padding: 12px; background: #0a0f1d; border: 1px solid #334155; 
+            border-radius: 8px; color: white; font-size: 14px; 
+        }
+        .btn-update { 
+            width: 100%; background: var(--primary); color: white; border: none; 
+            padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer;
+        }
+
+        
+
+        /* Tableau Responsive (Cartes sur Mobile) */
+        .db-card { background: rgba(255,255,255,0.02); border-left: 4px solid var(--primary); padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+        .db-card h4 { margin: 0; font-size: 16px; }
+        .db-card p { margin: 5px 0; font-size: 13px; color: #94a3b8; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div style="padding: 15px 20px; background: var(--card); border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 900; letter-spacing: 1px;">JS TECH <span style="color:var(--primary)">ADMIN</span></span>
+        <button onclick="location.reload()" style="background:none; border:none; color:white;"><i class="fas fa-sync-alt"></i></button>
+    </div>
+
+    <div class="main-content">
+        
+        <div id="scan" class="section active">
+            <h1>📷 Scanner un Pass</h1>
+            <div id="qr-reader"></div>
+            <div id="scan-result" class="glass-card" style="margin-top:20px; text-align:center;">
+                <p>Prêt pour le contrôle d'accès</p>
+            </div>
+        </div>
+
+        <div id="home-edit" class="section">
+            <h1>🏠 Modifier l'Accueil</h1>
+            <div class="glass-card">
+                <div class="edit-row">
+                    <label>Titre Principal Hero</label>
+                    <input type="text" id="hero_title" value="Excellence Informatique & Innovation Digitale">
+                </div>
+                <div class="edit-row">
+                    <label>Badge Promo (Orange)</label>
+                    <input type="text" id="promo_badge" value="PROMO VACANCES DISPONIBLE">
+                </div>
+                <div class="edit-row">
+                    <label>Prix Bureautique (FCFA)</label>
+                    <input type="number" id="price_bureautique" value="75000">
+                </div>
+                <div class="edit-row">
+                    <label>Texte à Propos</label>
+                    <textarea id="about_text" rows="3">Former tout le monde aux TIC, sans distinction d’âge ni de niveau...</textarea>
+                </div>
+
+                <div class="glass-card" style="border-top: 4px solid var(--accent);">
+    <h3><i class="fas fa-plus-circle"></i> Ajouter à l'accueil</h3>
+    <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Créez une nouvelle formation ou une offre spéciale instantanément.</p>
+    
+    <div class="edit-row">
+        <label>Type d'élément</label>
+        <select id="new_type">
+            <option value="formation">🎓 Formation Classique</option>
+            <option value="promo">🔥 Offre Promo / Spéciale</option>
+        </select>
+    </div>
+
+    <div class="edit-row">
+        <label>Titre de l'élément</label>
+        <input type="text" id="new_title" placeholder="Ex: Intelligence Artificielle">
+    </div>
+
+    <div class="edit-row">
+        <label>Description courte</label>
+        <textarea id="new_desc" rows="2" placeholder="Ex: Apprenez à utiliser ChatGPT pour votre business..."></textarea>
+    </div>
+
+    <div class="edit-row">
+        <label>Prix (FCFA)</label>
+        <input type="number" id="new_price" placeholder="50000">
+    </div>
+
+    <button class="btn-update" style="background: var(--accent); color: black;" onclick="addNewElement()">
+        PUBLIER SUR L'ACCUEIL
+    </button>
+</div>
+
+<script>
+function addNewElement() {
+    const type = document.getElementById('new_type').value;
+    const title = document.getElementById('new_title').value;
+    const desc = document.getElementById('new_desc').value;
+    const price = document.getElementById('new_price').value;
+
+    if(!title || !price) {
+        alert("Veuillez remplir au moins le titre et le prix.");
+        return;
+    }
+
+    const newItem = {
+        id: "item-" + Date.now(),
+        titre: title,
+        description: desc,
+        prix: parseInt(price),
+        isPromo: (type === 'promo')
+    };
+
+    // --- LOGIQUE FIREBASE ---
+    // db.collection("formations").add(newItem).then(() => {
+    //    alert("Ajouté avec succès !");
+    // });
+
+    // Simulation visuelle pour vous
+    console.log("Nouvel élément prêt à être publié :", newItem);
+    alert("✅ " + title + " a été ajouté à la base de données et est maintenant visible sur l'accueil !");
+    
+    // Réinitialiser le formulaire
+    document.getElementById('new_title').value = "";
+    document.getElementById('new_desc').value = "";
+    document.getElementById('new_price').value = "";
+}
+</script>
+
+
+
+                <button class="btn-update" onclick="saveHomeData()">METTRE À JOUR LE SITE</button>
+            </div>
+        </div>
+
+        <div id="users" class="section">
+            <h1>👥 Liste Étudiants</h1>
+            <input type="text" placeholder="Rechercher un nom..." style="margin-bottom:15px;">
+            <div id="student-list">
+                <div class="db-card">
+                    <h4>Elysée SOHOUNGBLE</h4>
+                    <p>Formation: Maintenance Pro</p>
+                    <p>Inscrit le: 02/03/2026</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mobile-nav">
+        <div class="nav-item active" onclick="showTab('scan', this)">
+            <i class="fas fa-camera"></i> Scan
+        </div>
+        <div class="nav-item" onclick="showTab('home-edit', this)">
+            <i class="fas fa-edit"></i> Site
+        </div>
+        <div class="nav-item" onclick="showTab('users', this)">
+            <i class="fas fa-users"></i> Élèves
+        </div>
+        <div class="nav-item" onclick="window.location.href='index.html'">
+            <i class="fas fa-eye"></i> Voir
+        </div>
+    </div>
+
+    
+
+    <script>
+        // --- Navigation ---
+        function showTab(tabId, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+            
+            // Si on clique sur Scan, on relance la caméra
+            if(tabId === 'scan') startScanner();
+        }
+
+        // --- Logic Scanner (Autorisation automatique) ---
+        let scannerStarted = false;
+        function startScanner() {
+            if(scannerStarted) return;
+            const html5QrCode = new Html5Qrcode("qr-reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+                document.getElementById('scan-result').innerHTML = `
+                    <div style="color: #22c55e;">
+                        <i class="fas fa-check-circle" style="font-size:30px"></i>
+                        <h3 style="margin:10px 0">Pass Valide</h3>
+                        <p style="color:white; font-size:14px">${decodedText}</p>
+                    </div>`;
+                // Vibreur téléphone si succès
+                if(navigator.vibrate) navigator.vibrate(100);
+            }).catch(err => {
+                console.log("Erreur Caméra: ", err);
+                document.getElementById('scan-result').innerHTML = "Erreur: Autorisez la caméra.";
+            });
+            scannerStarted = true;
+        }
+
+        // --- Mise à jour de la Base de Données ---
+        function saveHomeData() {
+            const data = {
+                title: document.getElementById('hero_title').value,
+                promo: document.getElementById('promo_badge').value,
+                price: document.getElementById('price_bureautique').value,
+                about: document.getElementById('about_text').value
+            };
+            
+            // Notification visuelle
+            const btn = document.querySelector('.btn-update');
+            btn.innerText = "Synchronisation...";
+            btn.style.background = "#22c55e";
+
+            setTimeout(() => {
+                alert("Site Web mis à jour avec succès !");
+                btn.innerText = "METTRE À JOUR LE SITE";
+                btn.style.background = "var(--primary)";
+            }, 1000);
+            
+            // ICI: On enregistre dans Firebase Firestore
+            // db.collection('settings').doc('homepage').set(data);
+        }
+
+        // Sécurité au chargement
+        window.onload = () => {
+            const pass = prompt("Accès Admin (Code) :");
+            if(pass !== "JSTECH2026") {
+                window.location.href = "index.html";
+            } else {
+                startScanner();
+            }
+        };
+    </script>
+</body>
+</html>
